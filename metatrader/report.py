@@ -88,17 +88,17 @@ class BacktestReport(BaseReport):
         report_file = get_report_abs_path(backtest.ea_name, alias=alias)
         with open(report_file, 'r') as fp:
             raw_html = fp.read()
-            
+
         b_soup = BeautifulSoup(raw_html)
         summary_in_table = b_soup.find_all('table')[0]
         tds = summary_in_table.find_all('td')
-        
+
         for index, td in enumerate(tds):
             if td.text == 'Initial deposit':
                 self.initial_deposit = float(tds[index+1].text)
             if td.text == 'Modelling quality':
                 modeling_quality_percentage_str = re.sub('%', '', tds[index+1].text)
-                self.modeling_quality_percentage = float(modeling_quality_percentage_str)
+                self.modeling_quality_percentage = modeling_quality_percentage_str
             elif td.text == 'Total net profit':
                 self.profit = float(tds[index+1].text)
             elif td.text == 'Gross profit':

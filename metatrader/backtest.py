@@ -130,11 +130,16 @@ class BackTest(object):
                         fp.write('%s,2=0\n' % k)
                         fp.write('%s,3=0\n' % k)
 
-
     def _get_conf_abs_path(self, alias=DEFAULT_MT4_NAME):
         mt4 = get_mt4(alias=alias)
         conf_file = os.path.join(mt4.appdata_path, 'tester', '%s.conf' % self.ea_name)
         return conf_file
+
+
+    def _get_conf_rel_path(self, alias=DEFAULT_MT4_NAME):
+        conf_file = os.path.join( 'tester', '%s.conf' % self.ea_name)
+        return conf_file
+
 
     def run(self, alias=DEFAULT_MT4_NAME):
         """
@@ -146,11 +151,11 @@ class BackTest(object):
         self.optimization = False
 
         self._prepare(alias=alias)
-        bt_conf = self._get_conf_abs_path(alias=alias)
-    
+        bt_conf = self._get_conf_rel_path(alias=alias)
+
         mt4 = get_mt4(alias=alias)
         mt4.run(self.ea_name, conf=bt_conf)
-    
+
         ret = BacktestReport(self)
         return ret
 
@@ -161,7 +166,7 @@ class BackTest(object):
 
         self.optimization = True
         self._prepare(alias=alias)
-        bt_conf = self._get_conf_abs_path(alias=alias)
+        bt_conf = self._get_conf_rel_path(alias=alias)
     
         mt4 = get_mt4(alias=alias)
         mt4.run(self.ea_name, conf=bt_conf)
