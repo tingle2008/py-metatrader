@@ -27,7 +27,7 @@ class BackTest(object):
       replace_report(bool): replace report flag. replace report is enabled if True
 
     """
-    def __init__(self, ea_name, param, symbol, period, from_date, to_date, model=0, spread=5, replace_repot=True):
+    def __init__(self, ea_name, param, symbol, period, from_date, to_date, model=0, spread=5, replace_repot=True,test_visual=False):
         self.ea_name = ea_name
         self.param = param
         self.symbol = symbol
@@ -37,6 +37,7 @@ class BackTest(object):
         self.model = model
         self.spread = spread
         self.replace_report = replace_repot
+        self.test_visual = test_visual
 
     def _prepare(self, alias=DEFAULT_MT4_NAME):
         """
@@ -66,6 +67,7 @@ class BackTest(object):
             TestReport=SampleEA
             TestReplaceReport=false
             TestShutdownTerminal=true
+            TestVisualEnable=false
         """
 
         mt4 = get_mt4(alias=alias)
@@ -88,6 +90,7 @@ class BackTest(object):
             fp.write('TestToDate=%s\n' % self.to_date.strftime('%Y.%m.%d'))
             fp.write('TestReport=%s\n' % self.ea_name)
             fp.write('TestReplaceReport=%s\n' % str(self.replace_report).lower())
+            fp.write('TestVisualEnable=%s\n' % str(self.test_visual).lower())
             fp.write('TestShutdownTerminal=%s\n' % str(shutdown_terminal).lower())
 
     def _create_param(self, alias=DEFAULT_MT4_NAME):
