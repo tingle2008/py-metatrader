@@ -49,7 +49,7 @@ class MT4(object):
             details see mt4 help doc Client Terminal/Tools/Configuration at Startup 
         """
         import subprocess
-        
+
         if conf:
             prog = '"%s"' % os.path.join(self.prog_path, MT4_EXE)
             conf = '"%s"' % conf
@@ -98,16 +98,17 @@ def is_uac_enabled():
     Returns:
      True if uac is enabled, False if uac is disabled.
     """
-    import _winreg    
-    
-    reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', 0, _winreg.KEY_READ)
-    value, regtype = _winreg.QueryValueEx(reg_key, 'EnableLUA')
-    
-    if value == 1:
-        #reg value 1 means UAC is enabled
-        return True
-    else:
-        return False
+    return False
+    # import _winreg
+
+    # reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', 0, _winreg.KEY_READ)
+    # value, regtype = _winreg.QueryValueEx(reg_key, 'EnableLUA')
+
+    # if value == 1:
+    #     #reg value 1 means UAC is enabled
+    #     return True
+    # else:
+    #     return False
 
 def get_appdata_path(program_file_dir):
     """

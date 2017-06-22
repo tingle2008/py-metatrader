@@ -88,11 +88,11 @@ class BacktestReport(BaseReport):
         report_file = get_report_abs_path(backtest.ea_name, alias=alias)
         with open(report_file, 'r') as fp:
             raw_html = fp.read()
-            
+
         b_soup = BeautifulSoup(raw_html)
         summary_in_table = b_soup.find_all('table')[0]
         tds = summary_in_table.find_all('td')
-        
+
         for index, td in enumerate(tds):
             if td.text == 'Initial deposit':
                 self.initial_deposit = float(tds[index+1].text)
@@ -179,15 +179,15 @@ class BacktestReport(BaseReport):
 
         if len(values) != 2:
             raise InvalidReportFormat('value of Maximal drawdown contains more than 2 values')
-        
+
         for value in values:
             if re.match('.*\%$',value):
                 rate = re.sub(r'%','',value)
                 rate = float(rate)
             else:
-                data = float(value)            
+                data = float(value)
         return data, rate
-    
+
     def split_to_tokens(self, line):
         '''
         Notes:

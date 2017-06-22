@@ -147,10 +147,10 @@ class BackTest(object):
 
         self._prepare(alias=alias)
         bt_conf = self._get_conf_abs_path(alias=alias)
-    
+
         mt4 = get_mt4(alias=alias)
         mt4.run(self.ea_name, conf=bt_conf)
-    
+
         ret = BacktestReport(self)
         return ret
 
@@ -162,10 +162,10 @@ class BackTest(object):
         self.optimization = True
         self._prepare(alias=alias)
         bt_conf = self._get_conf_abs_path(alias=alias)
-    
+
         mt4 = get_mt4(alias=alias)
         mt4.run(self.ea_name, conf=bt_conf)
-        
+
         ret = OptimizationReport(self)
         return ret
 
