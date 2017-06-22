@@ -27,7 +27,7 @@ class BackTest(object):
       replace_report(bool): replace report flag. replace report is enabled if True
 
     """
-    def __init__(self, ea_name, param, symbol, period, from_date, to_date, model=0, spread=5, replace_repot=True):
+    def __init__(self, ea_name, param, symbol, period, from_date, to_date, model=0, spread=5, replace_repot=True,test_visual=False):
         self.ea_name = ea_name
         self.param = param
         self.symbol = symbol
@@ -37,6 +37,7 @@ class BackTest(object):
         self.model = model
         self.spread = spread
         self.replace_report = replace_repot
+        self.test_visual = test_visual
 
     def _prepare(self, alias=DEFAULT_MT4_NAME):
         """
@@ -66,6 +67,7 @@ class BackTest(object):
             TestReport=SampleEA
             TestReplaceReport=false
             TestShutdownTerminal=true
+            TestVisualEnable=false
         """
 
         mt4 = get_mt4(alias=alias)
@@ -88,6 +90,7 @@ class BackTest(object):
             fp.write('TestToDate=%s\n' % self.to_date.strftime('%Y.%m.%d'))
             fp.write('TestReport=%s\n' % self.ea_name)
             fp.write('TestReplaceReport=%s\n' % str(self.replace_report).lower())
+            fp.write('TestVisualEnable=%s\n' % str(self.test_visual).lower())
             fp.write('TestShutdownTerminal=%s\n' % str(shutdown_terminal).lower())
 
     def _create_param(self, alias=DEFAULT_MT4_NAME):
@@ -130,11 +133,16 @@ class BackTest(object):
                         fp.write('%s,2=0\n' % k)
                         fp.write('%s,3=0\n' % k)
 
-
     def _get_conf_abs_path(self, alias=DEFAULT_MT4_NAME):
         mt4 = get_mt4(alias=alias)
         conf_file = os.path.join(mt4.appdata_path, 'tester', '%s.conf' % self.ea_name)
         return conf_file
+
+
+    def _get_conf_rel_path(self, alias=DEFAULT_MT4_NAME):
+        conf_file = os.path.join( 'tester', '%s.conf' % self.ea_name)
+        return conf_file
+
 
     def run(self, alias=DEFAULT_MT4_NAME):
         """
@@ -146,7 +154,7 @@ class BackTest(object):
         self.optimization = False
 
         self._prepare(alias=alias)
-        bt_conf = self._get_conf_abs_path(alias=alias)
+        bt_conf = self._get_conf_rel_path(alias=alias)
 
         mt4 = get_mt4(alias=alias)
         mt4.run(self.ea_name, conf=bt_conf)
@@ -161,8 +169,8 @@ class BackTest(object):
 
         self.optimization = True
         self._prepare(alias=alias)
-        bt_conf = self._get_conf_abs_path(alias=alias)
-
+        bt_conf = self._get_conf_rel_path(alias=alias)
+    
         mt4 = get_mt4(alias=alias)
         mt4.run(self.ea_name, conf=bt_conf)
 

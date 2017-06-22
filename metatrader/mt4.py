@@ -4,13 +4,14 @@
 """
 import os
 import logging
+import shlex
 
 _mt4s = {}
 
 DEFAULT_MT4_NAME = 'default'
 # mt4 program file path is written in origin.txt 
 ORIGIN_TXT = 'origin.txt'
-MT4_EXE = 'terminal.exe'
+MT4_EXE = 'terminal.sh'
 
 class MT4(object):
     """
@@ -51,10 +52,11 @@ class MT4(object):
         import subprocess
 
         if conf:
-            prog = '"%s"' % os.path.join(self.prog_path, MT4_EXE)
-            conf = '"%s"' % conf
+            prog = '%s' % os.path.join(self.prog_path, MT4_EXE)
+            conf = '%s' % conf
             cmd = '%s %s' % (prog, conf)
-            p = subprocess.Popen(cmd)
+            print '--- %s' % cmd
+            p = subprocess.Popen(shlex.split(cmd))
             p.wait()
             if p.returncode == 0:
                 logging.info('cmd[%s] successded', cmd)
@@ -99,11 +101,11 @@ def is_uac_enabled():
      True if uac is enabled, False if uac is disabled.
     """
     return False
-    # import _winreg
-
+    # import _winreg    
+    
     # reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', 0, _winreg.KEY_READ)
     # value, regtype = _winreg.QueryValueEx(reg_key, 'EnableLUA')
-
+    
     # if value == 1:
     #     #reg value 1 means UAC is enabled
     #     return True
